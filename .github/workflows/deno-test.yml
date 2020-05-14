@@ -30,12 +30,14 @@ jobs:
     - name: Deno setup
       run: |
         cd /tmp
-        wget https://github.com/denoland/deno/releases/download/v1.0.0/deno-x86_64-unknown-linux-gnu.zip
+        wget --quiet https://github.com/denoland/deno/releases/download/v1.0.0/deno-x86_64-unknown-linux-gnu.zip
         unzip -o deno-x86_64-unknown-linux-gnu.zip
+        rm -rf deno-x86_64-unknown-linux-gnu.zip
         chmod +x deno
+        sudo mv deno /bin
 
     # ci tests
     - name: Download deno v1 and test
       run: |
         cd $GITHUB_WORKSPACE
-        /tmp/deno test
+        deno test
