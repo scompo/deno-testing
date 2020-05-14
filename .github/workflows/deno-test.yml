@@ -22,11 +22,20 @@ jobs:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
 
-    # Runs a set of commands using the runners shell
+    # install system dependencies
+    - name: System setup
+      run: sudo apt-get install --yes wget unzip
+
+    # deno setup
+    - name: Deno setup
+      run: |
+        mkdir /deno
+        cd /deno
+        wget https://github.com/denoland/deno/releases/download/v1.0.0/deno-x86_64-unknown-linux-gnu.zip
+        unzip -o deno-x86_64-unknown-linux-gnu.zip
+
+    # ci tests
     - name: Download deno v1 and test
       run: |
         cd $GITHUB_WORKSPACE
-        sudo apt-get install wget unzip
-        wget https://github.com/denoland/deno/releases/download/v1.0.0/deno-x86_64-unknown-linux-gnu.zip
-        unzip -o deno-x86_64-unknown-linux-gnu.zip
-        ./deno test
+        /deno/deno test
